@@ -37,7 +37,7 @@ print(data)
 # ### ONE HOT ENCODING
 
 data = pd.get_dummies(data)
-
+print(data)
 
 # ### CREATING TRAIN/TEST SET
 
@@ -124,18 +124,19 @@ scoring = {'AUC': 'roc_auc', 'Accuracy': make_scorer(accuracy_score)}
 
 test_scores = []
 
-
-
 start = time.perf_counter()
 for name, estimator in zip(models,clfs):
-    print("Training for :",colored(name, "green", attrs=['reverse', 'blink']))
+    print("Training for :",colored(name, "green", attrs=['reverse']))
     startTrain = time.perf_counter()
-    clf = GridSearchCV(estimator, params[name], scoring=scoring, refit='AUC', n_jobs=-1, cv=5, 
+    
+    clf = GridSearchCV(estimator, params[name], scoring=scoring, refit='AUC', n_jobs=-1, cv=5, verbose=1, 
                        return_train_score=False)
     clf.fit(X_train, y_train)
 
-    print("best params: " + str(clf.best_params_))
-    print("best scores: " + str(clf.best_score_))
+    print("================================================================")
+    print("================================================================")
+    print(colored("best params: " + str(clf.best_params_)), "magenta")
+    print(colored("best scores: " + str(clf.best_score_)), "cyan")
     estimates = clf.predict_proba(X_test)
 
     y_pred = clf.predict(X_test)
@@ -149,7 +150,6 @@ for name, estimator in zip(models,clfs):
     jaccardScore = jaccard_score(y_test, y_pred)
     recallScore = recall_score(y_test, y_pred)
     rocAucScore =  roc_auc_score(y_test, y_pred)
-    
     
     
     print("--------------------------------")
@@ -167,9 +167,13 @@ for name, estimator in zip(models,clfs):
     endTrain = time.perf_counter()
     print("time for {} is {}s ".format(name, endTrain-startTrain))
     print()
+
+    print("================================================================")
+    print("================================================================")
+    
     test_scores.append((name ,acc, r2, precisionScore, jaccardScore, recallScore, rocAucScore, 
                         clf.best_score_, clf.best_params_))
-
+    
 end = time.perf_counter()
 print("time {}s ".format(end-start))
 
