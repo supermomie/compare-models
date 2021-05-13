@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 
 
-data = pd.read_csv("/home/fakhredineatallah/Documents/microsoft/DB/CSV/credit.csv")
+data = pd.read_csv("./credit.csv")
 
 print(data)
 print(data.columns)
