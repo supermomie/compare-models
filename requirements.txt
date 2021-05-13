@@ -1,0 +1,7 @@
+numpy
+pandas
+matplotlib
+termcolor
+tqdm
+Jinja2
+scikit-learn
